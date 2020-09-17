@@ -87,4 +87,23 @@ class ProductController extends AbstractController
             'message' => 'Produto atualizado com sucesso!'
         ]);
     }
+
+    /**
+     * @Route("/{productId}", name="remove", methods={"DELETE"})
+     */
+    public function remove($productId)
+    {
+
+        $doctrine = $this->getDoctrine();
+
+        $product = $doctrine->getRepository(Product::class)->find($productId);
+
+        $manager = $doctrine->getManager();
+        $manager->remove($product);
+        $manager->flush();
+
+        return $this->json([
+            'message' => 'Produto removido com sucesso!'
+        ]);
+    }
 }
