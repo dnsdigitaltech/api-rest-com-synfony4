@@ -17,9 +17,20 @@ class ProductController extends AbstractController
      */
     public function index()
     {
+        $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
         return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/ProductController.php',
+            'data' => $products
+        ]);
+    }
+
+    /**
+     * @Route("/{productId}", name="show", methods={"GET"})
+     */
+    public function show($productId)
+    {
+        $product = $this->getDoctrine()->getRepository(Product::class)->find($productId);
+        return $this->json([
+            'data' => $product
         ]);
     }
 
