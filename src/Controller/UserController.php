@@ -25,7 +25,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{productId}", name="show", methods={"GET"})
+     * @Route("/{userId}", name="show", methods={"GET"})
      */
     public function show($userId)
     {
@@ -56,6 +56,28 @@ class UserController extends AbstractController
         $doctrine->flush();
         return $this->json([
             'message' => 'Usuário criado com sucesso!'
+        ]);
+    }
+
+    /**
+     * @Route("/{userId}", name="update", methods={"PUT","PATCH"})
+     */
+    public function update(Request $request, $userId)
+    {
+        $userData = $request->request->all();
+
+        $doctrine = $this->getDoctrine();
+
+        $user = $doctrine->getRepository(User::class)->find($userId);
+        $form = $this->createForm(UserType::class, $user);
+        $form->submit($userData);
+
+        $user->setUpdatedAt(new \DateTime("now", new \DateTimeZone('America/Sao_Paulo')));
+
+        $manager = $doctrine->getManager();
+        $manager->flush();
+        return $this->json([
+            'message' => 'Usuário atualizado com sucesso!'
         ]);
     }
 
