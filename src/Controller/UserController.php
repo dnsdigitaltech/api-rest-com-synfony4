@@ -82,7 +82,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{productId}", name="remove", methods={"DELETE"})
+     * @Route("/{userId}", name="remove", methods={"DELETE"})
      */
     public function remove($userId)
     {
