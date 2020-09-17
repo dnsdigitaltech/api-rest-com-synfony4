@@ -50,5 +50,30 @@ class ProductController extends AbstractController
         ]);
     }
 
-    
+    /**
+     * @Route("/{productId}", name="update", methods={"PUT","PATCH"})
+     */
+    public function update(Request $request, $productId)
+    {
+        $productData = $request->request->all();
+
+        $doctrine = $this->getDoctrine();
+
+
+        $product = $doctrine->getRepository(Product::class)->find($productId);
+        $product->setName($productData['name']);
+        $product->setDescription($productData['description']);
+        $product->setContent($productData['content']);
+        $product->setSlug($productData['slug']);
+        $product->setPrice($productData['price']);
+        $product->setIsActive(true);
+        $product->setUpdatedAt(new \DateTime("now", new \DateTimeZone('America/Sao_Paulo')));
+
+        $manager = $doctrine->getManager();
+        $manager->flush();
+
+        return $this->json([
+            'message' => 'Produto atualizado com sucesso!'
+        ]);
+    }
 }
