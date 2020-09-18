@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,15 +43,17 @@ class ProductController extends AbstractController
         $productData = $request->request->all();
 
         $product = new Product();
-        $product->setName($productData['name']);
+        /*$product->setName($productData['name']);
         $product->setDescription($productData['description']);
         $product->setContent($productData['content']);
         $product->setSlug($productData['slug']);
-        $product->setPrice($productData['price']);
+        $product->setPrice($productData['price']);*/
+        $form = $this->createForm(ProductType::class, $product);
+        $form->submit($productData);
         $product->setIsActive(true);
         $product->setCreatedAt(new \DateTime("now", new \DateTimeZone('America/Sao_Paulo')));
         $product->setUpdatedAt(new \DateTime("now", new \DateTimeZone('America/Sao_Paulo')));
-
+        
         $doctrine = $this->getDoctrine()->getManager();
 
         $doctrine->persist($product);
@@ -72,12 +75,12 @@ class ProductController extends AbstractController
 
 
         $product = $doctrine->getRepository(Product::class)->find($productId);
-        $product->setName($productData['name']);
+        /*$product->setName($productData['name']);
         $product->setDescription($productData['description']);
         $product->setContent($productData['content']);
-        $product->setSlug($productData['slug']);
-        $product->setPrice($productData['price']);
-        $product->setIsActive(true);
+        $product->setSlug($productData['slug']);*/
+        $form = $this->createForm(ProductType::class, $product);
+        $form->submit($productData);    
         $product->setUpdatedAt(new \DateTime("now", new \DateTimeZone('America/Sao_Paulo')));
 
         $manager = $doctrine->getManager();
